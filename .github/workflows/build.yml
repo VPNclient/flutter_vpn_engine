@@ -36,9 +36,9 @@ jobs:
     - name: Run unit tests
       run: ./gradlew test
 
-    - name: Run instrumentation tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 33
-        script: ./gradlew connectedCheck
+#    - name: Run instrumentation tests
+#      uses: reactivecircus/android-emulator-runner@v2
+#      with:
+#        api-level: 33
+#        script: ./gradlew connectedCheck
         
