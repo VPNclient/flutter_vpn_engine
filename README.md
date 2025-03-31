@@ -49,7 +49,7 @@ graph TD
 Add to your `build.gradle`:
 ```kotlin
 dependencies {
-    implementation("com.yourcompany.vpnclient:engine:1.0.0")
+    implementation("click.vpnclient:engine:1.0.0")
 }
 ```
 
