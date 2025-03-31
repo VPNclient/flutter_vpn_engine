@@ -1,0 +1,18 @@
+graph TD
+  A[VPNclient App] --> B[VPNclient Engine Flutter Plugin]
+  B --> C[VPNclient Engine]
+  C --> D[Drivers]
+  C --> E[Cores]
+
+  D --> F[VPNclient Driver]
+  D --> G[tun2socks]
+  D --> H[hev5-socks]
+  D --> I[WinTun]
+  D --> J[No driver]
+
+  E --> K[VPNclient Xray Wrapper]
+  E --> L[libXray]
+  E --> M[sing-box]
+  E --> N[WireGuard]
+  E --> O[OpenVPN]
+  E --> P[No core]
