@@ -12,17 +12,22 @@ A powerful, cross-platform VPN client engine for ultimate flexibility and perfor
 
 ```mermaid
 graph TD
+  style A fill:#f9d5e5
   A[VPNclient App] --> B[VPNclient Engine Flutter Plugin]
+  style B fill:#eeac99
   B --> C[VPNclient Engine]
+  style C fill:#e06377
   C --> D[Drivers]
   C --> E[Cores]
 
+  style D fill:#c83349
   D --> F[VPNclient Driver]
   D --> G[tun2socks]
   D --> H[hev5-socks]
   D --> I[WinTun]
   D --> J[No driver]
 
+  style E fill:#5b9aa0
   E --> K[VPNclient Xray Wrapper]
   E --> L[libXray]
   E --> M[sing-box]
