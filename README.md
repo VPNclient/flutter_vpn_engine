@@ -32,6 +32,28 @@ graph TD
   E --> P[No core]
 ``` 
 
+```mermaid
+graph TD
+  style C fill:#e06377
+  C[VPNclient Engine] --> D[Drivers]
+  C --> E[Cores]
+
+  style D fill:#c83349
+  D --> F[VPNclient Driver]
+  D --> G[tun2socks]
+  D --> H[hev5-socks]
+  D --> I[WinTun]
+  D --> J[No driver]
+
+  style E fill:#5b9aa0
+  E --> K[VPNclient Xray Wrapper]
+  E --> L[libXray]
+  E --> M[sing-box]
+  E --> N[WireGuard]
+  E --> O[OpenVPN]
+  E --> P[No core]
+``` 
+
 ## Quick Start
 
 ### Prerequisites
