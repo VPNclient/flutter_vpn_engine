@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
+    id 'com.android.library'
+    //alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
@@ -9,7 +10,7 @@ android {
     compileSdk 35
 
     defaultConfig {
-        applicationId "click.vpnclient.engine"
+        //applicationId "click.vpnclient.engine"
         minSdk 21
         targetSdk 35
         versionCode 1
