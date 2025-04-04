@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'click.vpnclient.engine.android'
+    namespace 'click.vpnclient.engine'
     compileSdk 35
 
     defaultConfig {
-        applicationId "click.vpnclient.engine.android"
+        applicationId "click.vpnclient.engine"
         minSdk 21
         targetSdk 35
         versionCode 1
@@ -33,6 +33,12 @@ android {
     }
     buildFeatures {
         compose true
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['jniLibs']
+        }
     }
 }
 
