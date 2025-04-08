@@ -5,7 +5,21 @@
 
 
 ## 🚀 Key Features
+- **Cross-platform:** Runs on mobile, desktop, and server environments. Tested on iOS 15+, Android 6.0+, Windows 10/11, macOS (Catalina+), and Ubuntu Linux.
 - **Multi-Protocol Support:** Out-of-the-box integration with **Xray** core (supporting VMess, VLESS, Reality, and other protocols from the V2Ray ecosystem), **WireGuard**, and **OpenVPN**. This means the engine can handle anything from secure proxies to full VPN protocols, allowing easy migration from or combination of different VPN technologies.
+- **Multiple VPN Cores:** Integrates different VPN/proxy core implementations:
+  - **VPNclient Xray Wrapper** – a wrapper for the Xray core, enabling protocols like VMess, VLESS, Reality, Shadowsocks, etc. (Xray is a fork of V2Ray, known for its flexibility in configuring inbound/outbound proxy rules).
+  - **LibXray** – possibly a library form of Xray for direct linking.
+  - **Sing-Box** – integration with Sing-Box (another modern proxy/VPN core that can run V2Ray protocols). This provides redundancy and choice; if one implementation has issues or a new feature, you can switch.
+  - **WireGuard** – built-in support for WireGuard VPN protocol (via `libwg`).
+  - **OpenVPN** – support for OpenVPN protocol, likely using an OpenVPN3 library or similar, to allow traditional VPN connections.
+  - `No core` – you could run the engine in a mode where it doesn't internally handle any protocol (not common, but for testing or if using engine just as a packet forwarder).
+- **Multiple Network Drivers:** Supports several methods of capturing and forwarding traffic:
+  - `vpnclient-driver` – a built-in driver for creating and managing a virtual network interface (TUN) on supported platforms (acts as a VPN tunnel interface).
+  - `tun2socks` – uses the tun2socks technique to forward TUN interface traffic to a SOCKS proxy internally.
+  - `hev-socks5` – a high-performance SOCKS5 driver (likely utilizing the **Hev** Socks5 library) to capture traffic via a local proxy.
+  - `WinTun` – integration with the **WinTun** driver (from WireGuard) on Windows for efficient kernel-level tunneling.
+  - `No driver` – an option to run the engine without attaching a driver (for example, operating purely as a protocol client that provides a local endpoint like a SOCKS proxy which the user can configure manually).
 - **Modular Architecture:** The engine is built with a plugin-like architecture, separating “drivers” (network I/O mechanisms) from “cores” (VPN protocol implementations). This modular design means you can tailor it to your needs—for example, using a TUN interface driver for full-device VPN, or a SOCKS5 driver for proxy mode; using Xray for advanced protocols or falling back to OpenVPN, etc.
 - **Native Platform-Specific Implementations (Swift/Kotlin):** Platform-specific VPN functionalities, such as network interfaces or background service management, are written natively in Swift for iOS and Kotlin for Android. These implementations ensure proper integration with OS-specific networking features and provide better control over system resources, such as network extension APIs on iOS and VPN service management on Android.
 - **High Performance GoLang Core for Xray**:Xray, the core VPN protocol handler, is implemented in GoLang for efficient and concurrent networking performance, enabling high throughput and scalability, particularly in handling various tunneling protocols.
@@ -14,6 +28,7 @@
 - **Ease of Integration:** For developers, VPNclient Engine exposes a clear API (in multiple languages: Swift, Kotlin/Java, C++) to start/stop the VPN and configure options. It can be included as a library (.aar for Android, CocoaPod/Framework for iOS, static or dynamic libs for desktop). This makes it straightforward to integrate into your own app or system.
 - **Use Cases:** VPNclient Engine can power a typical VPN client app (like the VPNclient App above), but it’s flexible enough for other uses: building a secure proxy service into an app, creating a custom enterprise VPN solution, or academic/research projects experimenting with network tunneling.
 
+  
 ## 🏗️ Architecture Overview
 
 ```mermaid
