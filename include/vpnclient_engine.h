@@ -8,19 +8,18 @@ namespace vpnclient_engine {
 
 enum class EngineType {
 	VPNCLIENTXRAY, // VPNclient-xray-wrapper
-	LIBXRAY		   // libxray
-		SINGBOX,   // sing-box
-	WIREGUARD,	   // libwg
+	LIBXRAY,       // libxray
+	SINGBOX,       // sing-box
+	WIREGUARD,     // libwg
 	OPENVPN,
-
 };
 
 enum class ProxyMode {
-	NONE,			 // Direct connection
+	NONE,            // Direct connection
 	VPNCLIENTDRIVER, // VPNclient-driver
-	TUN2SOCKS,		 // tun2socks
-	HEV_SOCKS5,		 // hev-socks5
-	APPROXY			 // approxy
+	TUN2SOCKS,       // tun2socks
+	HEV_SOCKS5,      // hev-socks5
+	APPROXY,         // approxy
 };
 
 struct Config {
