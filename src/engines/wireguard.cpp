@@ -14,8 +14,8 @@ class WireGuard : public VPNClientEngine {
 		if(wg_start(h) {
 			log("WireGuard started successfully");
 			return true;
-        }
-        return false;
+		}
+		return false;
 	}
 
 	void stop() override {

@@ -31,26 +31,24 @@ std::unique_ptr<VPNClientEngine> VPNClientEngine::create(const Config &config) {
 	}
 
 	// Set up a proxy (if necessary)
-	if (config.proxy != ProxyMode::NONE) {
-		switch (config.proxy) {
-		case ProxyMode::VPNCLIENTDRIVER:
-			client->set_proxy(
-				std::make_unique<VPNclientDriverProxy>(config.proxy_config));
-			break;
-		case ProxyMode::TUN2SOCKS:
-			client->set_proxy(
-				std::make_unique<Tun2SocksProxy>(config.proxy_config));
-			break;
-		case ProxyMode::HEV_SOCKS5:
-			client->set_proxy(
-				std::make_unique<HevSocks5Proxy>(config.proxy_config));
-			break;
-		case ProxyMode::APPROXY:
-			client->set_proxy(std::make_unique<AppProxy>(config.proxy_config));
-			break;
-		default:
-			break;
-		}
+	switch (config.proxy) {
+	case ProxyMode::VPNCLIENTDRIVER:
+		client->set_proxy(
+			std::make_unique<VPNclientDriverProxy>(config.proxy_config));
+		break;
+	case ProxyMode::TUN2SOCKS:
+		client->set_proxy(
+			std::make_unique<Tun2SocksProxy>(config.proxy_config));
+		break;
+	case ProxyMode::HEV_SOCKS5:
+		client->set_proxy(
+			std::make_unique<HevSocks5Proxy>(config.proxy_config));
+		break;
+	case ProxyMode::APPROXY:
+		client->set_proxy(std::make_unique<AppProxy>(config.proxy_config));
+		break;
+	default:
+		break;
 	}
 
 	return client;

@@ -14,8 +14,8 @@ class SingBox : public VPNClientEngine {
 		if(singbox_start(sb) {
 			log("sing-box started successfully");
 			return true;
-        }
-        return false;
+		}
+		return false;
 	}
 
 	void stop() override {
