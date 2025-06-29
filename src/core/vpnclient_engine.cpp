@@ -11,7 +11,7 @@ namespace vpnclient_engine {
 std::unique_ptr<VPNClientEngine> VPNClientEngine::create(const Config &config) {
 	std::unique_ptr<VPNClientEngine> client;
 
-	// Создаем выбранный движок
+	// Create the selected engine
 	switch (config.engine) {
 	case EngineType::VPNCLIENTXRAY:
 		client = std::make_unique<VPNclientXRAYEngine>(config.engine_config);
@@ -30,7 +30,7 @@ std::unique_ptr<VPNClientEngine> VPNClientEngine::create(const Config &config) {
 		break;
 	}
 
-	// Настраиваем прокси (если нужно)
+	// Set up a proxy (if necessary)
 	if (config.proxy != ProxyMode::NONE) {
 		switch (config.proxy) {
 		case ProxyMode::VPNCLIENTDRIVER:

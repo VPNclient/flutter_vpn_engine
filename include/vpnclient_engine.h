@@ -16,7 +16,7 @@ enum class EngineType {
 };
 
 enum class ProxyMode {
-	NONE,			 // Прямое подключение
+	NONE,			 // Direct connection
 	VPNCLIENTDRIVER, // VPNclient-driver
 	TUN2SOCKS,		 // tun2socks
 	HEV_SOCKS5,		 // hev-socks5
@@ -27,7 +27,7 @@ struct Config {
 	EngineType engine = EngineType::VPNCLIENTXRAY;
 	ProxyMode proxy = ProxyMode::VPNCLIENTDRIVER;
 
-	// Пути к конфигурационным файлам
+	// Paths to configuration files
 	std::string engine_config;
 	std::string proxy_config;
 

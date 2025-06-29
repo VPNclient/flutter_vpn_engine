@@ -3,14 +3,14 @@ project(vpnclient_engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Подключаем зависимости
+# Connecting dependencies
 find_package(OpenSSL REQUIRED)
 find_package(VPNclientXRAY REQUIRED)
 find_package(XRay REQUIRED)
 find_package(SingBox REQUIRED)
 find_package(WireGuard REQUIRED)
 
-# Основная библиотека
+# Main library
 add_library(vpnclient_engine STATIC
     src/core/vpnclient_engine.cpp
     src/engines/wireguard_engine.cpp
@@ -31,6 +31,6 @@ target_link_libraries(vpnclient_engine
 )
 
 
-# Пример
+# Example
 add_executable(test_vpnclient_engine tests/test_vpnclient_engine.cpp)
 target_link_libraries(test_vpnclient_engine vpnclient_engine)
