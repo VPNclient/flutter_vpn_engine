@@ -1,3 +1,7 @@
 CMakeCache.txt
 CMakeFiles/
 build/
+
+.idea
+.vscode
+*.swp
