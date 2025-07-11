@@ -1,41 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-//plugins {
-    // id 'com.android.library'
-    //alias(libs.plugins.android.application) apply false
-    //alias(libs.plugins.kotlin.android) apply false
-    //alias(libs.plugins.kotlin.compose) apply false
-//}
-
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-}
-
-android {
-    namespace = "click.vpnclient.engine"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-    }
-
-    //buildTypes {
-    //    release {
-    //        isMinifyEnabled = false
-    //    }
-    //}
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.application) apply false
 }
