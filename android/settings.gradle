@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "VPNclient Engine Android"
-include ':app'
+rootProject.name = "VPNClient-engine"
+include ':vpnclient-engine'
+include ':vpnclient-engine-example'
