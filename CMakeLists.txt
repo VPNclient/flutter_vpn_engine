@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Connecting dependencies
 find_package(OpenSSL REQUIRED)
-find_package(VPNclientXRAY REQUIRED)
 find_package(XRay REQUIRED)
 find_package(SingBox REQUIRED)
 find_package(WireGuard REQUIRED)

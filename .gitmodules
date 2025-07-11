@@ -1,0 +1,4 @@
+[submodule "external/libXray"]
+	path = external/libXray
+	url = https://github.com/XTLS/libXray.git
+	ignore = dirty
