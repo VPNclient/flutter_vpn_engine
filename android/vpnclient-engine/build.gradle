@@ -19,6 +19,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -26,8 +33,7 @@ android {
 }
 
 dependencies {
-
-    implementation libs.appcompat.v7
+    implementation files('libs/libXray.aar')
     testImplementation libs.junit
     androidTestImplementation libs.runner
     androidTestImplementation libs.android.espresso.core
