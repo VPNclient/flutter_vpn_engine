@@ -9,14 +9,8 @@ import libXray.LibXray;
  */
 public class VpnClientEngine {
     private static final String TAG = "VpnClientEngine";
-
-    public enum DriverType {
-        LibXray
-    }
-
-    private final DriverType driver;
     private static boolean isRunning = false;
-
+    private final DriverType driver;
     public VpnClientEngine(DriverType driverType) {
         this.driver = driverType;
         switch (this.driver) {
@@ -26,6 +20,10 @@ public class VpnClientEngine {
             default:
                 throw new IllegalArgumentException("Unsupported driver type: " + driverType);
         }
+    }
+
+    public static String getVersion() {
+        return LibXray.xrayVersion();
     }
 
     public boolean start(String dataDir, String config) {
@@ -57,7 +55,7 @@ public class VpnClientEngine {
         return LibXray.getXrayState();
     }
 
-    public static String getVersion() {
-        return LibXray.xrayVersion();
+    public enum DriverType {
+        LibXray
     }
 }
