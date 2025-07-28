@@ -1,7 +1,14 @@
-CMakeCache.txt
-CMakeFiles/
-build/
+# OS Dependent files
+.DS_Store
 
-.idea
+# IDE Dependent files
 .vscode
+.idea
 *.swp
+
+# Build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
