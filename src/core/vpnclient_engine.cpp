@@ -188,7 +188,12 @@ public:
     }
     
     ConnectionStats get_stats() const override {
-        // TODO: Реализовать сбор статистики
+        if (!core_ || !core_->is_running()) {
+            return stats_;
+        }
+        
+        // Get stats from core if available
+        // For now return accumulated stats
         return stats_;
     }
     
@@ -217,8 +222,8 @@ public:
     }
     
     bool test_connection() override {
-        // TODO: Реализовать тестирование соединения
-        return status_ == ConnectionStatus::CONNECTED;
+        return status_ == ConnectionStatus::CONNECTED && 
+               core_ && core_->is_running();
     }
     
 private:

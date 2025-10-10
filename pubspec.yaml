@@ -20,19 +20,6 @@ dev_dependencies:
   ffigen: ^11.0.0
 
 flutter:
-  plugin:
-    platforms:
-      android:
-        package: com.vpnclient.engine
-        pluginClass: VpnclientEnginePlugin
-      ios:
-        pluginClass: VpnclientEnginePlugin
-      linux:
-        pluginClass: VpnclientEnginePlugin
-      macos:
-        pluginClass: VpnclientEnginePlugin
-      windows:
-        pluginClass: VpnclientEnginePlugin
 
 ffigen:
   name: VpnclientEngineBindings

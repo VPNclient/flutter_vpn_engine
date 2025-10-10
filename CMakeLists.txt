@@ -16,6 +16,7 @@ option(ENABLE_V2RAY "Enable V2Ray core" ON)
 # Исходные файлы
 set(CORE_SOURCES
     src/core/vpnclient_engine.cpp
+    src/core/vpnclient_engine_c_api.cpp
 )
 
 set(DRIVER_SOURCES
@@ -70,36 +71,60 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # Внешние зависимости
-# TODO: Добавить пути к библиотекам драйверов и ядер
+set(HEV_SOCKS5_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../flutter_vpn_hev5socks)
+set(TUN2SOCKS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../flutter_vpn_tun2socks)
+set(SINGBOX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../flutter_vpn_singbox)
+set(LIBXRAY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../fork_vpn_libxray)
+set(V2RAY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../flutter_v2ray)
 
 if(ENABLE_HEV_SOCKS5)
     # Подключение flutter_vpn_hev5socks
-    # target_include_directories(${PROJECT_NAME} PRIVATE ../flutter_vpn_hev5socks/include)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE hev_socks5_tunnel)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${HEV_SOCKS5_DIR}/include)
+    if(EXISTS ${HEV_SOCKS5_DIR}/build/libhev_socks5.a)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${HEV_SOCKS5_DIR}/build/libhev_socks5.a)
+    elseif(EXISTS ${HEV_SOCKS5_DIR}/build/libhev_socks5.so)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${HEV_SOCKS5_DIR}/build/libhev_socks5.so)
+    endif()
 endif()
 
 if(ENABLE_TUN2SOCKS)
     # Подключение flutter_vpn_tun2socks
-    # target_include_directories(${PROJECT_NAME} PRIVATE ../flutter_vpn_tun2socks/include)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE tun2socks)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${TUN2SOCKS_DIR}/include)
+    if(EXISTS ${TUN2SOCKS_DIR}/build/libtun2socks.a)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${TUN2SOCKS_DIR}/build/libtun2socks.a)
+    elseif(EXISTS ${TUN2SOCKS_DIR}/build/libtun2socks.so)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${TUN2SOCKS_DIR}/build/libtun2socks.so)
+    endif()
 endif()
 
 if(ENABLE_SINGBOX)
     # Подключение flutter_vpn_singbox
-    # target_include_directories(${PROJECT_NAME} PRIVATE ../flutter_vpn_singbox/include)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE singbox)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${SINGBOX_DIR}/include)
+    if(EXISTS ${SINGBOX_DIR}/build/libsingbox.a)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${SINGBOX_DIR}/build/libsingbox.a)
+    elseif(EXISTS ${SINGBOX_DIR}/build/libsingbox.so)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${SINGBOX_DIR}/build/libsingbox.so)
+    endif()
 endif()
 
 if(ENABLE_LIBXRAY)
     # Подключение fork_vpn_libxray
-    # target_include_directories(${PROJECT_NAME} PRIVATE ../fork_vpn_libxray/include)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE xray)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${LIBXRAY_DIR}/include)
+    if(EXISTS ${LIBXRAY_DIR}/build/libxray.a)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBXRAY_DIR}/build/libxray.a)
+    elseif(EXISTS ${LIBXRAY_DIR}/build/libxray.so)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBXRAY_DIR}/build/libxray.so)
+    endif()
 endif()
 
 if(ENABLE_V2RAY)
     # Подключение flutter_v2ray
-    # target_include_directories(${PROJECT_NAME} PRIVATE ../flutter_v2ray/include)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE v2ray)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${V2RAY_DIR}/include)
+    if(EXISTS ${V2RAY_DIR}/build/libv2ray.a)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${V2RAY_DIR}/build/libv2ray.a)
+    elseif(EXISTS ${V2RAY_DIR}/build/libv2ray.so)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${V2RAY_DIR}/build/libv2ray.so)
+    endif()
 endif()
 
 # Установка

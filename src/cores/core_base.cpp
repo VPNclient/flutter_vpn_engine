@@ -16,3 +16,4 @@ void BaseCore::log(const std::string& level, const std::string& message) {
 } // namespace cores
 } // namespace vpnclient_engine
 
+

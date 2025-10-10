@@ -3,8 +3,15 @@
 
 // Подключаем заголовочные файлы fork_vpn_libxray
 extern "C" {
-    // TODO: Подключить реальные заголовочные файлы из fork_vpn_libxray
-    // #include "libxray.h"
+    // Placeholder для libxray API
+    typedef void* LibXrayInstance;
+    
+    LibXrayInstance libxray_create();
+    bool libxray_init(LibXrayInstance instance, const char* config_json);
+    bool libxray_start(LibXrayInstance instance);
+    void libxray_stop(LibXrayInstance instance);
+    void libxray_destroy(LibXrayInstance instance);
+    const char* libxray_get_version();
 }
 
 namespace vpnclient_engine {

@@ -3,8 +3,15 @@
 
 // Подключаем заголовочные файлы flutter_v2ray
 extern "C" {
-    // TODO: Подключить реальные заголовочные файлы из flutter_v2ray
-    // #include "v2ray.h"
+    // Placeholder для v2ray API
+    typedef void* V2RayInstance;
+    
+    V2RayInstance v2ray_create();
+    bool v2ray_init(V2RayInstance instance, const char* config_json);
+    bool v2ray_start(V2RayInstance instance);
+    void v2ray_stop(V2RayInstance instance);
+    void v2ray_destroy(V2RayInstance instance);
+    const char* v2ray_get_version();
 }
 
 namespace vpnclient_engine {

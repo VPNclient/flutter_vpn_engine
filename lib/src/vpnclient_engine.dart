@@ -34,27 +34,12 @@ class VpnClientEngine {
   StreamController<ConnectionStats>? _statsStreamController;
   StreamController<Map<String, String>>? _logStreamController;
 
-  // Platform layer with fallback to mock
-  late final dynamic _platform;
-  bool _useMockPlatform = false;
+  // Platform layer
+  late final VpnEnginePlatform _platform;
 
   VpnClientEngine._() {
-    _setupPlatform();
+    _platform = VpnEnginePlatform();
     _setupMethodCallHandler();
-  }
-
-  void _setupPlatform() {
-    try {
-      _platform = VpnEnginePlatform();
-      _log('INFO', 'Using native platform implementation');
-    } catch (e) {
-      _platform = MockVpnEnginePlatform();
-      _useMockPlatform = true;
-      _log(
-        'WARNING',
-        'Using mock platform implementation (native library not available)',
-      );
-    }
   }
 
   /// Получить экземпляр движка (синглтон)
@@ -67,10 +52,6 @@ class VpnClientEngine {
   Future<bool> initialize(VpnEngineConfig config) async {
     _config = config;
     try {
-      if (_useMockPlatform) {
-        return _platform.initialize(config);
-      }
-
       final result = _platform.initialize(config);
       if (result) {
         _log('INFO', 'VPN Engine initialized successfully');
@@ -227,13 +208,7 @@ class VpnClientEngine {
   /// Обновить статистику
   Future<void> updateStats() async {
     try {
-      if (_useMockPlatform) {
-        _stats = _platform.getStats();
-      } else {
-        // TODO: Implement stats fetching from native platform
-        // For now, keep previous stats
-      }
-
+      _stats = _platform.getStats();
       _statsCallback?.call(_stats);
       _statsStreamController?.add(_stats);
     } catch (e) {

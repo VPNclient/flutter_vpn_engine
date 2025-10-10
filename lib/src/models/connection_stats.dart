@@ -71,3 +71,4 @@ class ConnectionStats {
     return 'ConnectionStats(sent: $formattedBytesSent, received: $formattedBytesReceived, latency: ${latencyMs}ms)';
   }
 }
+

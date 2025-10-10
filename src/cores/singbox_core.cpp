@@ -3,8 +3,7 @@
 
 // Подключаем заголовочные файлы flutter_vpn_singbox
 extern "C" {
-    // TODO: Подключить реальные заголовочные файлы из flutter_vpn_singbox
-    // #include "singbox.h"
+    #include "singbox_c_api.h"
 }
 
 namespace vpnclient_engine {
@@ -44,18 +43,11 @@ bool SingBoxCore::start() {
     
     log("INFO", "Starting SingBox core");
     
-    // TODO: Реализовать запуск sing-box
-    // Пример:
-    // std::string config_json = parse_config_to_singbox_format(config_.config_json);
-    // singbox_instance_ = singbox_create(config_json.c_str());
-    // if (!singbox_instance_) {
-    //     log("ERROR", "Failed to create SingBox instance");
-    //     return false;
-    // }
-    // if (!singbox_start(singbox_instance_)) {
-    //     log("ERROR", "Failed to start SingBox");
-    //     return false;
-    // }
+    SingBoxInstance instance = static_cast<SingBoxInstance>(singbox_instance_);
+    if (!instance || !singbox_start(instance)) {
+        log("ERROR", "Failed to start SingBox");
+        return false;
+    }
     
     running_ = true;
     log("INFO", "SingBox core started");
@@ -69,37 +61,43 @@ void SingBoxCore::stop() {
     
     log("INFO", "Stopping SingBox core");
     
-    // TODO: Реализовать остановку sing-box
-    // if (singbox_instance_) {
-    //     singbox_stop(singbox_instance_);
-    // }
+    SingBoxInstance instance = static_cast<SingBoxInstance>(singbox_instance_);
+    if (instance) {
+        singbox_stop(instance);
+    }
     
     running_ = false;
     log("INFO", "SingBox core stopped");
 }
 
 std::string SingBoxCore::get_version() const {
-    // TODO: Получать версию из библиотеки
-    // return singbox_version();
-    return version_;
+    return singbox_get_version();
 }
 
 bool SingBoxCore::init_singbox() {
-    // TODO: Инициализация библиотеки sing-box
-    return true;
+    singbox_instance_ = singbox_create();
+    if (!singbox_instance_) {
+        return false;
+    }
+    
+    SingBoxConfig singbox_config;
+    singbox_config.config_json = parse_config_to_singbox_format(config_.config_json).c_str();
+    singbox_config.working_dir = nullptr;
+    singbox_config.disable_color = true;
+    singbox_config.log_level = config_.enable_logging ? 4 : 0;
+    
+    return singbox_init(static_cast<SingBoxInstance>(singbox_instance_), &singbox_config);
 }
 
 void SingBoxCore::cleanup_singbox() {
-    // TODO: Очистка ресурсов sing-box
     if (singbox_instance_) {
-        // singbox_destroy(singbox_instance_);
+        singbox_destroy(static_cast<SingBoxInstance>(singbox_instance_));
         singbox_instance_ = nullptr;
     }
 }
 
 std::string SingBoxCore::parse_config_to_singbox_format(const std::string& config_json) {
-    // TODO: Преобразовать конфигурацию в формат sing-box
-    // В зависимости от входного формата, может потребоваться конвертация
+    // Конфигурация уже в формате JSON для sing-box
     return config_json;
 }
 
