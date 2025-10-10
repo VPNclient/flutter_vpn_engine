@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'models/config.dart';
 import 'models/connection_status.dart';
 import 'models/connection_stats.dart';
+import 'platform/vpn_engine_platform.dart';
 
 /// Callback для логов
 typedef LogCallback = void Function(String level, String message);
@@ -33,8 +34,27 @@ class VpnClientEngine {
   StreamController<ConnectionStats>? _statsStreamController;
   StreamController<Map<String, String>>? _logStreamController;
 
+  // Platform layer with fallback to mock
+  late final dynamic _platform;
+  bool _useMockPlatform = false;
+
   VpnClientEngine._() {
+    _setupPlatform();
     _setupMethodCallHandler();
+  }
+
+  void _setupPlatform() {
+    try {
+      _platform = VpnEnginePlatform();
+      _log('INFO', 'Using native platform implementation');
+    } catch (e) {
+      _platform = MockVpnEnginePlatform();
+      _useMockPlatform = true;
+      _log(
+        'WARNING',
+        'Using mock platform implementation (native library not available)',
+      );
+    }
   }
 
   /// Получить экземпляр движка (синглтон)
@@ -47,11 +67,17 @@ class VpnClientEngine {
   Future<bool> initialize(VpnEngineConfig config) async {
     _config = config;
     try {
-      final result = await _channel.invokeMethod<bool>(
-        'initialize',
-        config.toMap(),
-      );
-      return result ?? false;
+      if (_useMockPlatform) {
+        return _platform.initialize(config);
+      }
+
+      final result = _platform.initialize(config);
+      if (result) {
+        _log('INFO', 'VPN Engine initialized successfully');
+        _log('INFO', 'Core: ${config.core.type.name}');
+        _log('INFO', 'Driver: ${config.driver.type.name}');
+      }
+      return result;
     } catch (e) {
       _log('ERROR', 'Failed to initialize: $e');
       return false;
@@ -67,13 +93,19 @@ class VpnClientEngine {
 
     try {
       _updateStatus(ConnectionStatus.connecting);
-      final result = await _channel.invokeMethod<bool>('connect');
-      if (result == true) {
+      _log('INFO', 'Connecting to VPN...');
+
+      final result = await _platform.connect();
+
+      if (result) {
         _updateStatus(ConnectionStatus.connected);
+        _log('INFO', 'Successfully connected to VPN');
+        _startStatsPolling();
       } else {
         _updateStatus(ConnectionStatus.error);
+        _log('ERROR', 'Failed to connect to VPN');
       }
-      return result ?? false;
+      return result;
     } catch (e) {
       _log('ERROR', 'Failed to connect: $e');
       _updateStatus(ConnectionStatus.error);
@@ -85,12 +117,31 @@ class VpnClientEngine {
   Future<void> disconnect() async {
     try {
       _updateStatus(ConnectionStatus.disconnecting);
-      await _channel.invokeMethod('disconnect');
+      _log('INFO', 'Disconnecting from VPN...');
+
+      _platform.disconnect();
+
       _updateStatus(ConnectionStatus.disconnected);
+      _log('INFO', 'Disconnected from VPN');
+      _stopStatsPolling();
     } catch (e) {
       _log('ERROR', 'Failed to disconnect: $e');
       _updateStatus(ConnectionStatus.disconnected);
     }
+  }
+
+  Timer? _statsTimer;
+
+  void _startStatsPolling() {
+    _statsTimer?.cancel();
+    _statsTimer = Timer.periodic(const Duration(seconds: 1), (_) async {
+      await updateStats();
+    });
+  }
+
+  void _stopStatsPolling() {
+    _statsTimer?.cancel();
+    _statsTimer = null;
   }
 
   /// Получить текущий статус
@@ -176,12 +227,15 @@ class VpnClientEngine {
   /// Обновить статистику
   Future<void> updateStats() async {
     try {
-      final result = await _channel.invokeMethod<Map>('getStats');
-      if (result != null) {
-        _stats = ConnectionStats.fromMap(Map<String, dynamic>.from(result));
-        _statsCallback?.call(_stats);
-        _statsStreamController?.add(_stats);
+      if (_useMockPlatform) {
+        _stats = _platform.getStats();
+      } else {
+        // TODO: Implement stats fetching from native platform
+        // For now, keep previous stats
       }
+
+      _statsCallback?.call(_stats);
+      _statsStreamController?.add(_stats);
     } catch (e) {
       _log('ERROR', 'Failed to get stats: $e');
     }
@@ -190,12 +244,14 @@ class VpnClientEngine {
   /// Освободить ресурсы
   Future<void> dispose() async {
     await disconnect();
+    _stopStatsPolling();
     await _statusStreamController?.close();
     await _statsStreamController?.close();
     await _logStreamController?.close();
     _statusStreamController = null;
     _statsStreamController = null;
     _logStreamController = null;
+    _platform.dispose();
   }
 
   // Приватные методы
