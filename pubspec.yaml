@@ -1,0 +1,44 @@
+name: vpnclient_engine
+description: VPN Client Engine - unified interface for VPN cores and drivers
+version: 1.0.0
+homepage: https://github.com/VPNclient/flutter_vpn_engine
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ffi: ^2.1.0
+  plugin_platform_interface: ^2.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  ffigen: ^11.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.vpnclient.engine
+        pluginClass: VpnclientEnginePlugin
+      ios:
+        pluginClass: VpnclientEnginePlugin
+      linux:
+        pluginClass: VpnclientEnginePlugin
+      macos:
+        pluginClass: VpnclientEnginePlugin
+      windows:
+        pluginClass: VpnclientEnginePlugin
+
+ffigen:
+  name: VpnclientEngineBindings
+  description: Auto-generated bindings for vpnclient_engine
+  output: 'lib/src/bindings/vpnclient_engine_bindings.dart'
+  headers:
+    entry-points:
+      - 'include/vpnclient_engine.h'
+
