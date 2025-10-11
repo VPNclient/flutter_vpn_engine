@@ -5,6 +5,8 @@ import 'package:ffi/ffi.dart';
 import '../models/config.dart';
 import '../models/connection_status.dart';
 import '../models/connection_stats.dart';
+import '../models/core_type.dart';
+import '../models/driver_type.dart';
 
 /// Native VPN Engine instance pointer
 typedef NativeEngineInstance = ffi.Pointer<ffi.Void>;
