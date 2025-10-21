@@ -4,6 +4,8 @@ import 'models/config.dart';
 import 'models/connection_status.dart';
 import 'models/connection_stats.dart';
 import 'platform/vpn_engine_platform.dart';
+import 'subscription_manager.dart';
+import 'v2ray_url_parser.dart';
 
 /// Callback для логов
 typedef LogCallback = void Function(String level, String message);
@@ -36,9 +38,13 @@ class VpnClientEngine {
 
   // Platform layer
   late final VpnEnginePlatform _platform;
+  
+  // Subscription manager
+  late final SubscriptionManager _subscriptionManager;
 
   VpnClientEngine._() {
     _platform = VpnEnginePlatform();
+    _subscriptionManager = SubscriptionManager();
     _setupMethodCallHandler();
   }
 
@@ -216,6 +222,89 @@ class VpnClientEngine {
     }
   }
 
+  // ============ Subscription API ============
+  
+  /// Add subscription
+  void addSubscription({required String subscriptionURL, String? name}) {
+    _subscriptionManager.addSubscription(
+      subscriptionURL: subscriptionURL,
+      name: name,
+    );
+  }
+  
+  /// Clear all subscriptions
+  void clearSubscriptions() {
+    _subscriptionManager.clearSubscriptions();
+  }
+  
+  /// Update subscription
+  Future<bool> updateSubscription({required int subscriptionIndex}) {
+    return _subscriptionManager.updateSubscription(
+      subscriptionIndex: subscriptionIndex,
+    );
+  }
+  
+  /// Ping server
+  Future<void> pingServer({
+    required int subscriptionIndex,
+    required int serverIndex,
+    String testUrl = 'https://www.google.com/generate_204',
+  }) {
+    return _subscriptionManager.pingServer(
+      subscriptionIndex: subscriptionIndex,
+      serverIndex: serverIndex,
+      testUrl: testUrl,
+    );
+  }
+  
+  /// Stream of ping results
+  Stream<PingResult> get onPingResult => _subscriptionManager.onPingResult;
+  
+  /// Get subscriptions
+  List<Subscription> get subscriptions => _subscriptionManager.subscriptions;
+  
+  /// Get server from subscription
+  ServerConfig? getServer({
+    required int subscriptionIndex,
+    required int serverIndex,
+  }) {
+    return _subscriptionManager.getServer(
+      subscriptionIndex: subscriptionIndex,
+      serverIndex: serverIndex,
+    );
+  }
+  
+  /// Connect to specific server from subscription
+  Future<bool> connectToServer({
+    required int subscriptionIndex,
+    required int serverIndex,
+  }) async {
+    final server = getServer(
+      subscriptionIndex: subscriptionIndex,
+      serverIndex: serverIndex,
+    );
+    
+    if (server == null) {
+      _log('ERROR', 'Server not found');
+      return false;
+    }
+    
+    // Parse V2Ray URL
+    final v2rayUrl = parseV2RayURL(server.url);
+    if (v2rayUrl == null) {
+      _log('ERROR', 'Failed to parse server URL');
+      return false;
+    }
+    
+    // Update config with server configuration
+    if (_config != null) {
+      _config!.core.config_json = v2rayUrl.getFullConfiguration();
+      await initialize(_config!);
+    }
+    
+    return await connect();
+  }
+
   /// Освободить ресурсы
   Future<void> dispose() async {
     await disconnect();
@@ -226,6 +315,7 @@ class VpnClientEngine {
     _statusStreamController = null;
     _statsStreamController = null;
     _logStreamController = null;
+    _subscriptionManager.dispose();
     _platform.dispose();
   }
 
