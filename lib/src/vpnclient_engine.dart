@@ -38,7 +38,7 @@ class VpnClientEngine {
 
   // Platform layer
   late final VpnEnginePlatform _platform;
-  
+
   // Subscription manager
   late final SubscriptionManager _subscriptionManager;
 
@@ -223,7 +223,7 @@ class VpnClientEngine {
   }
 
   // ============ Subscription API ============
-  
+
   /// Add subscription
   void addSubscription({required String subscriptionURL, String? name}) {
     _subscriptionManager.addSubscription(
@@ -231,19 +231,19 @@ class VpnClientEngine {
       name: name,
     );
   }
-  
+
   /// Clear all subscriptions
   void clearSubscriptions() {
     _subscriptionManager.clearSubscriptions();
   }
-  
+
   /// Update subscription
   Future<bool> updateSubscription({required int subscriptionIndex}) {
     return _subscriptionManager.updateSubscription(
       subscriptionIndex: subscriptionIndex,
     );
   }
-  
+
   /// Ping server
   Future<void> pingServer({
     required int subscriptionIndex,
@@ -256,13 +256,13 @@ class VpnClientEngine {
       testUrl: testUrl,
     );
   }
-  
+
   /// Stream of ping results
   Stream<PingResult> get onPingResult => _subscriptionManager.onPingResult;
-  
+
   /// Get subscriptions
   List<Subscription> get subscriptions => _subscriptionManager.subscriptions;
-  
+
   /// Get server from subscription
   ServerConfig? getServer({
     required int subscriptionIndex,
@@ -273,7 +273,7 @@ class VpnClientEngine {
       serverIndex: serverIndex,
     );
   }
-  
+
   /// Connect to specific server from subscription
   Future<bool> connectToServer({
     required int subscriptionIndex,
@@ -283,25 +283,25 @@ class VpnClientEngine {
       subscriptionIndex: subscriptionIndex,
       serverIndex: serverIndex,
     );
-    
+
     if (server == null) {
       _log('ERROR', 'Server not found');
       return false;
     }
-    
+
     // Parse V2Ray URL
     final v2rayUrl = parseV2RayURL(server.url);
     if (v2rayUrl == null) {
       _log('ERROR', 'Failed to parse server URL');
       return false;
     }
-    
+
     // Update config with server configuration
     if (_config != null) {
       _config!.core.config_json = v2rayUrl.getFullConfiguration();
       await initialize(_config!);
     }
-    
+
     return await connect();
   }
 

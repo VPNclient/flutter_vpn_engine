@@ -209,8 +209,7 @@ class _VpnExamplePageState extends State<VpnExamplePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Status:',
-                            style: TextStyle(fontSize: 16)),
+                        const Text('Status:', style: TextStyle(fontSize: 16)),
                         Row(
                           children: [
                             Container(
@@ -319,4 +318,3 @@ class _VpnExamplePageState extends State<VpnExamplePage> {
     super.dispose();
   }
 }
-
