@@ -288,7 +288,7 @@ final config = VpnEngineConfig(
 
 ## Лицензия
 
-MIT License - см. LICENSE файл
+NativeMindNONC
 
 ## Авторы
 
