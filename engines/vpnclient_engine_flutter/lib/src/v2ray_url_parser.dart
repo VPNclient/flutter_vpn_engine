@@ -47,6 +47,11 @@ class VmessURL extends V2RayURL {
     _config = parse();
   }
 
+  /// Real extracted fields, exposed for `config/protocol_config.dart`'s
+  /// `VmessConfig` adapter (flows/sdd-flutter-vpnclient-engine/ Task 4.2) —
+  /// no new parsing, just visibility onto what [parse] already produced.
+  Map<String, dynamic> get extractedFields => _config;
+
   @override
   String get remark => _config['ps'] ?? 'VMess Server';
 
@@ -114,6 +119,9 @@ class VlessURL extends V2RayURL {
   VlessURL({required super.url}) {
     _config = parse();
   }
+
+  /// See `VmessURL.extractedFields`.
+  Map<String, dynamic> get extractedFields => _config;
 
   @override
   String get remark => Uri.decodeComponent(_config['remark'] ?? 'VLess Server');
@@ -204,6 +212,9 @@ class TrojanURL extends V2RayURL {
     _config = parse();
   }
 
+  /// See `VmessURL.extractedFields`.
+  Map<String, dynamic> get extractedFields => _config;
+
   @override
   String get remark =>
       Uri.decodeComponent(_config['remark'] ?? 'Trojan Server');
@@ -274,6 +285,9 @@ class ShadowsocksURL extends V2RayURL {
   ShadowsocksURL({required super.url}) {
     _config = parse();
   }
+
+  /// See `VmessURL.extractedFields`.
+  Map<String, dynamic> get extractedFields => _config;
 
   @override
   String get remark =>

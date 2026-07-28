@@ -13,6 +13,9 @@ dependencies:
   ffi: ^2.1.0
   plugin_platform_interface: ^2.1.7
   http: ^1.2.0
+  shared_preferences: ^2.2.0
+  meta: ^1.11.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:

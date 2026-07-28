@@ -1,5 +1,5 @@
-import 'core_type.dart';
-import 'driver_type.dart';
+import '../cores/core_type.dart';
+import '../drivers/driver_type.dart';
 
 /// Конфигурация ядра VPN
 class CoreConfig {

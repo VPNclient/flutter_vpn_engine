@@ -1,3 +1,8 @@
+// The FFI struct fields below are snake_case to match the real native C ABI
+// layout exactly (vpnclient_engine.h) — this file is kept unchanged (no
+// native ABI changes), so the naming can't be "fixed" to lowerCamelCase.
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:ffi' as ffi;
 import 'dart:io';
@@ -5,8 +10,8 @@ import 'package:ffi/ffi.dart';
 import '../models/config.dart';
 import '../models/connection_status.dart';
 import '../models/connection_stats.dart';
-import '../models/core_type.dart';
-import '../models/driver_type.dart';
+import '../cores/core_type.dart';
+import '../drivers/driver_type.dart';
 
 /// Native VPN Engine instance pointer
 typedef NativeEngineInstance = ffi.Pointer<ffi.Void>;
